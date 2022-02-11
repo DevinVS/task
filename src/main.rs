@@ -25,17 +25,8 @@ enum Command {
         #[clap(short, long)]
         all: bool
     },
-    /// Add a task to be completed
-    Add {
-        /// Name of the task
-        name: String,
-        /// Date due, formatted as month/day
-        #[clap(short, long)]
-        date: String,
-        /// Time due, formatted as 'hour:min am/pm'
-        #[clap(short, long, default_value="11:59 PM")]
-        time: String,
-    },
+    /// Add a task to be completed (interactive)
+    Add,
     /// Mark a task as complete
     Done {
         /// Id of the task to mark as done
@@ -52,7 +43,10 @@ fn main() {
     let args = Args::parse();
 
     match args.command {
-        Some(Command::Add {name, date, time}) => {
+        Some(Command::Add) => {
+            let name = task::request_name();
+            let date = task::request_date();
+            let time = task::request_time();
             task::add(name.clone(), date, time);
             println!("Added task '{name}'\n");
             task::list(false)

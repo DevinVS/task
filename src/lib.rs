@@ -1,5 +1,8 @@
 mod io;
+use std::io::stdin;
+use std::io::stdout;
 use std::iter::Peekable;
+use std::io::Write;
 
 use chrono::DateTime;
 use chrono::Datelike;
@@ -215,4 +218,34 @@ pub fn done(id: String) {
 
 pub fn remove(id: String) {
     io::remove(id).unwrap();
+}
+
+pub fn request_name() -> String {
+    let mut input = String::new();
+    print!("Name: ");
+    stdout().flush().unwrap();
+    stdin().read_line(&mut input).unwrap();
+
+    input.trim().into()
+}
+
+pub fn request_date() -> String {
+    let mut input = String::new();
+    print!("Date (month/day): ");
+    stdout().flush().unwrap();
+    stdin().read_line(&mut input).unwrap();
+    input.trim().into()
+}
+
+pub fn request_time() -> String {
+    let mut input = String::new();
+    print!("Time [11:59 PM]: ");
+    stdout().flush().unwrap();
+    stdin().read_line(&mut input).unwrap();
+
+    if input.trim().is_empty() {
+        "11:59 PM".into()
+    } else {
+        input
+    }
 }
