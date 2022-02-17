@@ -1,3 +1,7 @@
+use std::io::stdin;
+use std::io::stdout;
+use std::io::Write;
+
 use clap::Parser;
 use clap::AppSettings;
 use clap::Subcommand;
@@ -44,10 +48,9 @@ fn main() {
 
     match args.command {
         Some(Command::Add) => {
-            let name = task::request_name();
-            let date = task::request_date();
-            let time = task::request_time();
-            task::add(name.clone(), date, time);
+            let name = prompt("Name: ").unwrap();
+            let datetime = prompt("Date: ").unwrap();
+            task::add(name.clone(), datetime);
             println!("Added task '{name}'\n");
             task::list(false)
         },
@@ -67,5 +70,18 @@ fn main() {
         _ => {
             task::list(false)
         }
+    }
+}
+
+fn prompt(prompt: &str) -> Option<String> {
+    print!("{}", prompt);
+    stdout().flush().unwrap();
+    let mut buf = String::new();
+    stdin().read_line(&mut buf).unwrap();
+
+    if buf.trim().is_empty() {
+        None
+    } else {
+        Some(buf.trim().into())
     }
 }

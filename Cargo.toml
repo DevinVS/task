@@ -7,6 +7,8 @@ edition = "2021"
 
 [dependencies]
 clap = {version = "3.0", features = ["derive"]}
-chrono = "0.4"
 nix = "*"
 rand = "*"
+regex = "*"
+chrono = "0.4"
+fuzzydate = "0.1.3"
