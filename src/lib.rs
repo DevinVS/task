@@ -24,11 +24,16 @@ pub fn list(all: bool) {
 
             print_header(width);
             if all {
-                for task in tm.all() {
+                let mut tasks: Vec<&Task> = tm.all().collect();
+                tasks.sort_by_key(|t| t.date);
+
+                for task in tasks {
                     println!("{}", task.pretty(width));
                 }
             } else {
-                for task in tm.unfinished() {
+                let mut tasks: Vec<&Task> = tm.unfinished().collect();
+                tasks.sort_by_key(|t| t.date);
+                for task in tasks {
                     println!("{}", task.pretty(width));
                 }
             }
